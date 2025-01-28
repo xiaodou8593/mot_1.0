@@ -1979,4 +1979,208 @@ function mot_uav:test/impulse/start
 
 我们观察到实体对象不断在地上翻滚
 
-## 未完待续
+创建一个异步测试项目，命名为fall
+
+```
+creisp test/fall/start
+```
+
+![alt text](image-36.png)
+
+编写test/fall/start，设置测试实体和测试时间
+
+```
+#mot_uav:test/fall/start
+
+# 生成测试程序实体
+data modify storage mot_uav:io input set from storage mot_uav:class test
+function mot_uav:_new
+
+...
+
+# 设置测试程序运行时间
+scoreboard players set @e[tag=result,limit=1] killtime 200
+```
+
+编写test/fall/end，销毁测试实体
+
+```
+#mot_uav:test/fall/end
+
+function mot_uav:_del
+```
+
+进入游戏，运行测试
+
+```
+reload
+function mot_uav:test/fall/start
+```
+
+![alt text](image-37.png)
+
+我们观察到，实体对象明明是竖直下落的，但它仍然在地上打滚
+
+这是碰撞冲量施加的顺序性导致的
+
+当第一个碰撞点接触地面后，为临时对象施加了冲量，改变了临时对象的状态
+
+那么第二个碰撞点虽然检测到接触了地面，但是由于当前临时对象的状态是正在远离地面的，因此不会施加冲量
+
+最后把临时对象同步给实体对象，表现效果就变成了无人机只有一个角落被施加了冲量
+
+为了解决这个问题，我们需要延迟施加这些冲量
+
+首先打开mot终端，创建冲量的_model和_proj接口
+
+```
+cre impulse/_model impulse/_proj
+```
+
+![alt text](image-38.png)
+
+我们手动实现这两个接口
+
+```
+#mot_uav:impulse/_model
+# 构建冲量的数据模板
+# 输出数据模板storage mot_uav:io result
+
+data modify storage mot_uav:io result set value {vector:[0.0d,0.0d,0.0d], point:[0.0d,0.0d,0.0d]}
+
+execute store result storage mot_uav:io result.vector[0] double 0.0001 run scoreboard players get impulse_fx int
+execute store result storage mot_uav:io result.vector[1] double 0.0001 run scoreboard players get impulse_fy int
+execute store result storage mot_uav:io result.vector[2] double 0.0001 run scoreboard players get impulse_fz int
+execute store result storage mot_uav:io result.point[0] double 0.0001 run scoreboard players get impulse_x int
+execute store result storage mot_uav:io result.point[1] double 0.0001 run scoreboard players get impulse_y int
+execute store result storage mot_uav:io result.point[2] double 0.0001 run scoreboard players get impulse_z int
+```
+
+```
+#mot_uav:impulse/_proj
+# 冲量的数据模板投射到临时对象
+# 输入数据模板storage mot_uav:io input
+
+execute store result score impulse_fx int run data get storage mot_uav:io input.vector[0] 10000
+execute store result score impulse_fy int run data get storage mot_uav:io input.vector[1] 10000
+execute store result score impulse_fz int run data get storage mot_uav:io input.vector[2] 10000
+execute store result score impulse_x int run data get storage mot_uav:io input.point[0] 10000
+execute store result score impulse_y int run data get storage mot_uav:io input.point[1] 10000
+execute store result score impulse_z int run data get storage mot_uav:io input.point[2] 10000
+```
+
+修好main，用一个列表接收所有的冲量
+
+```
+#mot_uav:main
+...
+
+# 遍历碰撞点列表
+data modify storage mot_uav:io list_impulse set value []
+execute store result score loop int run data get storage mot_uav:io collision_points
+execute if score loop int matches 1.. as 0-0-0-0-0 run function mot_uav:collision/loop
+execute if data storage mot_uav:io list_impulse[0] run function mot_uav:collision/apply
+
+...
+```
+
+修改collision/bounce，把施加冲量的命令注释掉，改为把冲量的数据模板添加进临时列表
+
+```
+#mot_uav:collision/bounce
+...
+
+# 对mot_uav临时对象施加矢量
+#function mot_uav:impulse/_apply
+function mot_uav:impulse/_model
+data modify storage mot_uav:io list_impulse append from storage mot_uav:io result
+```
+
+打开mot终端，添加collision/apply与collision/apply_loop函数
+
+```
+cre collision/apply collision/apply_loop
+```
+
+![alt text](image-39.png)
+
+编写collision/apply
+
+```
+#mot_uav:collision/apply
+# mot_uav:main调用
+
+# 获取冲量数量
+execute store result score cnt_impulse int run data get storage mot_uav:io list_impulse
+
+# 遍历并施加每个冲量
+function mot_uav:collision/apply_loop
+```
+
+编写collision/apply_loop
+
+```
+#mot_uav:collision/apply_loop
+# mot_uav:collision/apply调用
+
+# 把冲量投射为临时对象
+data modify storage mot_uav:io input set from storage mot_uav:io list_impulse[0]
+function mot_uav:impulse/_proj
+
+# 根据权重调整冲量大小
+scoreboard players operation impulse_fx int /= cnt_impulse int
+scoreboard players operation impulse_fy int /= cnt_impulse int
+scoreboard players operation impulse_fz int /= cnt_impulse int
+
+# 施加冲量
+function mot_uav:impulse/_apply
+
+# 遍历每个冲量
+data remove storage mot_uav:io list_impulse[0]
+execute if data storage mot_uav:io list_impulse[0] run function mot_uav:collision/apply_loop
+```
+
+进入游戏，重新运行测试
+
+```
+reload
+function mot_uav:test/fall/start
+```
+
+![alt text](image-40.png)
+
+观察到无人机一直在地面弹跳，弹性疑似有点太好了
+
+我们修改弹性系数常量
+
+```
+#mot_uav:_consts
+...
+
+# 弹性系数
+scoreboard players set mot_uav_b int 6500
+
+...
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fall/start
+```
+
+![alt text](image-41.png)
+
+观察到无人机在地面颤抖
+
+我们再次运行impulse测试
+
+```
+function mot_uav:test/impulse/start
+```
+
+![alt text](image-42.png)
+
+无人机不会在地上打滚了
