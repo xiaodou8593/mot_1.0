@@ -1,0 +1,7 @@
+#$(module_prefix)_clone
+# 复制实体对象
+# 输入执行实体
+# 输出 @e[tag=result,limit=1]
+
+function $(module_prefix)_get
+function $(module_prefix)_gen

@@ -1,0 +1,30 @@
+# 无需初始化/创建的数据位置
+global_default: {
+	positions: {
+		<@s, x>, <@s, y>, <@s, z>,
+		<@s, x, 1w>, <@s, y, 1w>, <@s, z, 1w>
+	},
+	caches: {
+		[storage math:io xyz, ListDouble, 3],
+		[storage math:io xyzw, ListFloat, 4],
+		[storage math:io rec, ListCompound, 1],
+		[storage math:io rotation, ListFloat, 2]
+	}
+}
+
+# 整数常量
+int_consts: {-1, 0, 1, 2, 3, 4, 5, 10, 100, 1000, 10000}
+
+# 项目名称
+project_name:_
+
+# 实体对象的数据位置
+entity_store_path:data
+
+# 实体对象的类型
+entity_type:marker
+
+# 初始化模块时创建的接口
+init_interfaces:{
+	_get,_store,_new,set,del,main,tick
+}

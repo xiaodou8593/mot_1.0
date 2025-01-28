@@ -1,0 +1,17 @@
+#$(module_prefix)_init
+# 初始化$(module_name)包
+
+forceload add -1 -1 1 1
+
+$init $(nbt _this)
+
+$create $(score _entity)
+
+scoreboard objectives add int dummy
+scoreboard players set $(int_consts) int $(int_consts)
+
+function $(module_prefix)_consts
+
+function $(module_prefix)_class
+
+function $(module_prefix)$(sub_modules)init

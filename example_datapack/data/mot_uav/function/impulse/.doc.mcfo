@@ -1,0 +1,15 @@
+#mot_uav:impulse/doc.mcfo
+
+# 冲量的临时对象
+_this:{
+	vector:{
+		<impulse_fx,int,1w>,
+		<impulse_fy,int,1w>,
+		<impulse_fz,int,1w>
+	},
+	point:{
+		<impulse_x,int,1w>,
+		<impulse_y,int,1w>,
+		<impulse_z,int,1w>
+	}
+}

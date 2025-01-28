@@ -1,0 +1,5 @@
+#$(module_prefix)_unbe
+# 解除实体对象身份
+# 输入执行实体
+
+tag @s remove $(module_name)

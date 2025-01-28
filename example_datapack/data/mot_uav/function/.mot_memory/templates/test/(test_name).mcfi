@@ -1,0 +1,4 @@
+#$(module_prefix)test/$(test_name)
+
+tellraw @a "--- $(module_name) $(test_name) result ---"
+

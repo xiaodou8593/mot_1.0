@@ -1,0 +1,39 @@
+#mot_uav:doc.mcfo
+
+# 临时对象
+_this:{
+	velocity:{<vx,int,1w>, <vy,int,1w>, <vz,int,1w>},
+	angular_vec:{
+		<angular_x,int,1w>,
+		<angular_y,int,1w>,
+		<angular_z,int,1w>
+	},
+	angular_len:<angular_len,int,1w>,
+	position:{<x,int,1w>, <y,int,1w>, <z,int,1w>},
+	uvw_coord:{
+		ivec:{<ivec_x,int,1w>, <ivec_y,int,1w>, <ivec_z,int,1w>},
+		jvec:{<jvec_x,int,1w>, <jvec_y,int,1w>, <jvec_z,int,1w>},
+		kvec:{<kvec_x,int,1w>, <kvec_y,int,1w>, <kvec_z,int,1w>}
+	},
+	quaternion:{
+		xyzw:{
+			<quat_x,int,1w>,
+			<quat_y,int,1w>,
+			<quat_z,int,1w>,
+			<quat_w,int,1w>
+		},
+		start_xyzw:{
+			<quat_start_x,int,1w>,
+			<quat_start_y,int,1w>,
+			<quat_start_z,int,1w>,
+			<quat_start_w,int,1w>
+		},
+		orth_xyzw:{
+			<quat_orth_x,int,1w>,
+			<quat_orth_y,int,1w>,
+			<quat_orth_z,int,1w>,
+			<quat_orth_w,int,1w>
+		},
+		phi:<quat_phi,int,1w>
+	}
+}
