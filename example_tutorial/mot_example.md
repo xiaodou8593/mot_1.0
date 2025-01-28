@@ -19,7 +19,7 @@ https://github.com/xiaodou8593/math3.1_lalib
 https://github.com/xiaodou8593/math3.1_gelib
 
 
-下载并按照perf_1.1性能测试框架
+下载并安装perf_1.1性能测试框架
 https://github.com/xiaodou8593/perf_1.1
 
 初始化前置库
