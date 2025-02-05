@@ -1,5 +1,7 @@
 # mot实例教程——遥控无人机
 
+*(整个文件夹的结构，文件组织方式，模板文件语法，以及功能？)*
+
 本文适用mc版本：JE1.21.4
 
 本文的代码部分会出现省略标记："..."，代表这里是之前已经编写好的代码。请根据展示出的代码上下文，**推断出新代码正确的插入或修改位置**！
@@ -54,7 +56,7 @@ function math:particles/_load_1214
 
 ## 设计无人机的临时对象
 
-打开.doc.mcfo，定义一个对象命名为_this
+打开.doc.mcfo，定义一个对象命名为_this *(这个对象定义是什么意思？定义后会发生什么，或者之后准备运行什么？)*
 ```
 #mot_uav:doc.mcfo
 
@@ -62,7 +64,7 @@ function math:particles/_load_1214
 _this:{}
 ```
 
-我们希望无人机继承线性代数库(lalib)中的局部坐标系(uvw)和四元数(quat)模块
+我们希望无人机继承线性代数库(lalib)中的局部坐标系(uvw)和四元数(quat)模块 *(什么叫继承？)*
 
 打开math:uvw/_get，可以看到如下数据字段：
 ```
@@ -101,7 +103,7 @@ _this:{
 
 其中**1w表示记分板是10000倍率的定点小数**，也可以直接写成10000（看开发者个人喜好）
 
-这里{}的嵌套结构和命名是自定义的，是为了在mot中更好地检索临时对象
+这里{}的嵌套结构和命名是自定义的，是为了在mot中更好地检索临时对象 *(这套自定义的嵌套结构会用来检索什么临时对象？什么是临时对象？)*
 
 把临时对象展平之后，只要**保证基本数据项的顺序不变，就不影响在mcf中的生成结果**
 
@@ -187,7 +189,7 @@ creisp命令可以拆解为四部分：cre-i-s-p
 
 cre意为create，创建函数接口。可以看到：除了我们指定的test/move/start函数以外，还创建了另外的两个关联的函数test/move/main和test/move/end
 
-如果我们打开mot的模板记忆文件夹mot_memory/templates/test/(test_name)，会看到这三个函数的模板在同一个文件夹内。因此，**创建其中的一个模板，也会关联另外两个模板**
+如果我们打开mot的模板记忆文件夹mot_memory/templates/test/(test_name)，会看到这三个函数的模板在同一个文件夹内。因此，**创建其中的一个模板，也会关联另外两个模板** *(模板是如何运作的？关联是什么意思？)*
 
 i意为interpret，**解析当前目录和mot_memory/objects中全部.mcfo文件**的对象格式，在mot内存中创建这些对象
 
@@ -197,7 +199,7 @@ list
 ```
 ![alt text](image-5.png)
 
-s意为sync，同步代码，mot会寻找模块内所有的.mcfunction函数，找到这些函数在mot_memory/templates中对应的函数模板，并读取这些模板的内容，**用interpret过程解析出来的对象填充这些模板的内容**，同步到.mcfunction函数中
+s意为sync，同步代码，mot会寻找模块 *(模块是什么？)* 内所有的.mcfunction函数，找到这些函数在mot_memory/templates中对应的函数模板 *(什么是对应？)* ，并读取这些模板的内容，**用interpret过程解析出来的对象填充这些模板的内容**，同步到.mcfunction函数中
 
 我们在之前敲的回车键，就等价于依次执行interpret, sync
 
@@ -291,13 +293,13 @@ cre _init
 ```
 说明：
 
-1. mot_uav的项目结构是：整个数据包只有mot_uav这个模块，因此初始化使用的是对外开放的_init接口，在_init模板中会创建mot运行所需的int记分板
+1. mot_uav的项目结构是：整个数据包只有mot_uav这个模块，因此初始化使用的是对外开放的_init接口，在_init模板中会创建mot运行所需的int记分板 *(项目结构不够清晰)* 
 
 2. 另外一种项目结构是：数据包内有多个模块，mot管理对应模块时，应创建内部的init函数，**此时为了mot能够正常运行，整个项目应确保提供一个int记分板 (scoreboard objectives add int dummy)**
 
 终端继续输入命令
 ```
-init
+init *(作用是初始化什么？)* 
 ```
 
 然后直接敲一次回车，同步代码
@@ -322,7 +324,7 @@ function mot_uav:_init
 creisp _anchor_to
 ```
 
-我们来实现执行方位到mot_uav临时对象的转换方法
+我们来实现执行方位到mot_uav临时对象的转换方法 *(为什么要把执行方位转mot_uav临时对象？不明白有什么意义)* 
 
 首先确定输入输出
 ```
@@ -370,7 +372,7 @@ function math:quat/_touvw
 
 这里调用的函数修改了临时对象`uvw_coord: {ivec, jvec, kvec}`
 
-打开mot终端创建一个_model接口和_zero接口
+打开mot终端创建一个_model接口和_zero接口 *(_model接口和_zero接口怎么来的？)* 
 ```
 creis _model _zero
 ```
@@ -422,7 +424,7 @@ creisp test/coord_sys/start
 
 打开mot_uav:test/coord_sys/start
 
-修改测试程序执行者为mot_uav的一个实例（使用test数据模板生成）
+修改测试程序执行者为mot_uav的一个实例（使用test数据模板生成）*(看不懂这句话)* 
 
 ```
 #mot_uav:test/coord_sys/start
