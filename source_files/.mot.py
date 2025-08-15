@@ -395,6 +395,8 @@ class MCFObject:
         # TODO: 初始值的NBT解析问题（暂时把参数换成n解决，只能初始化列表）
         self.init_value = None
         self.init_num = 0
+        if self.data_type in init_elms:
+            self.init_value = '[]'
         # 列表类型的初始值
         if len(nbt_args) >= 3 and self.data_type in init_elms:
             try:

@@ -1,58 +1,8 @@
-# mot实例教程——遥控无人机
+# 第一章：物理系统
 
-本文适用mc版本：JE1.21.4
+## 第一节：运动学对象设计
 
-本文的代码部分会出现省略标记："..."，代表这里是之前已经编写好的代码。请根据展示出的代码上下文，**推断出新代码正确的插入或修改位置**！
-
-## 安装前置库并初始化
-
-下载并安装iframe_1.1框架
-https://github.com/xiaodou8593/iframe_1.1
-
-下载并安装math3.1本体
-https://github.com/xiaodou8593/math3.1
-
-下载并安装math3.1线性代数库
-https://github.com/xiaodou8593/math3.1_lalib
-
-下载并安装math3.1图形库
-https://github.com/xiaodou8593/math3.1_gelib
-
-
-下载并安装perf_1.1性能测试框架
-https://github.com/xiaodou8593/perf_1.1
-
-初始化前置库
-```
-function iframe:_init
-function math:_init
-function math:_init_la
-function math:_init_ge
-function perf:_init
-```
-
-导入1.21.4粒子设置
-```
-function math:particles/_load_1214
-```
-
-## 创建数据包并安装mot
-
-**mot的代码同步功能会清空已有代码，所以请谨慎把mot安装到您已有的数据包中！**
-
-创建一个数据包，命名空间是mot_uav
-
-将mot_memory、.mot.py、.doc.mcfo放进function文件夹里面
-
-打开mot_memory/objects/global_settings.mcfo
-
-项目名称(project_name)设置为mot_uav
-
-双击.mot.py运行mot
-
-**关闭mot后重新打开mot不会影响运行结果**，因此您在学习本教程的时候可以随时退出，有时间回来再打开mot继续学习
-
-## 设计无人机的临时对象
+### 设计无人机的临时对象
 
 打开.doc.mcfo，定义一个对象命名为_this
 ```
@@ -167,11 +117,11 @@ _this:{
 
 输入对象名字_this，回车
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 没有语法错误提示即成功
 
-## 特性测试
+### 特性测试
 
 为了实现无人机的移动，我们需要测试mc中的几种不同的移动实现方案，并找出最佳方案
 
@@ -181,21 +131,21 @@ _this:{
 ```
 creisp test/move/start
 ```
-![alt text](image-1.png)
+![alt text](images/image-1.png)
 
 creisp命令可以拆解为四部分：cre-i-s-p
 
 cre意为create，创建函数接口。可以看到：除了我们指定的test/move/start函数以外，还创建了另外的两个关联的函数test/move/main和test/move/end
 
-如果我们打开mot的模板记忆文件夹mot_memory/templates/test/(test_name)，会看到这三个函数的模板在同一个文件夹内。因此，**创建其中的一个模板，也会关联另外两个模板**
+如果我们打开mot的模板记忆文件夹.mot_memory/templates/test/(test_name)，会看到这三个函数的模板在同一个文件夹内。因此，**创建其中的一个模板，也会关联另外两个模板**
 
-i意为interpret，**解析当前目录和mot_memory/objects中全部.mcfo文件**的对象格式，在mot内存中创建这些对象
+i意为interpret，**解析当前目录和.mot_memory/objects中全部.mcfo文件**的对象格式，在mot内存中创建这些对象
 
 您可以使用list命令查看解析得到的全部对象
 ```
 list
 ```
-![alt text](image-5.png)
+![alt text](images/image-5.png)
 
 s意为sync，同步代码，mot会寻找模块内所有的.mcfunction函数，找到这些函数在mot_memory/templates中对应的函数模板，并读取这些模板的内容，**用interpret过程解析出来的对象填充这些模板的内容**，同步到.mcfunction函数中
 
@@ -283,7 +233,7 @@ Ps: upd_aec是指Age标签每刻刷新的药水云，它在早期数据包中被
 
 3. 骑乘实体的坐标不会被抬高，省去偏移的工作
 
-## 初始化mot_uav数据包
+### 初始化mot_uav数据包
 
 打开mot终端，输入命令
 ```
@@ -302,7 +252,7 @@ init
 
 然后直接敲一次回车，同步代码
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 进入游戏重载并执行初始化
 ```
@@ -312,9 +262,9 @@ function mot_uav:_init
 
 在开发阶段为了方便调试，我们可以放置一个紫cb来运行mot_uav模块的tick入口（在实际应用场景中这个调用的入口可以灵活调整，例如放到你的地图小游戏主循环里，本教程不涉及）
 
-![alt text](image-3.png)
+![alt text](images/image-3.png)
 
-## 构建mot_uav的坐标系统
+### 构建mot_uav的坐标系统
 
 打开mot终端创建一个在白名单中的_anchor_to接口
 
@@ -375,9 +325,9 @@ function math:quat/_touvw
 creis _model _zero
 ```
 
-请注意，这里的creis命令不包含p，这意味着两个函数不被mot保护，会自动同步它们的代码
+请注意，这里的creis命令不包含p，这意味着两个函数不被mot保护，mot会自动同步它们的代码
 
-创建一个白名单的_class接口
+创建一个在mot白名单之中的_class接口
 
 ```
 creisp _class
@@ -388,7 +338,7 @@ creisp _class
 mot_whitelist
 ```
 
-![alt text](image-4.png)
+![alt text](images/image-4.png)
 
 这里的mot_whitelist本质上和_this一样，属于对象的名称，通过直接输入对象的名称来查看内容
 
@@ -411,18 +361,18 @@ function mot_uav:_class
 data get storage mot_uav:class test
 ```
 
-![alt text](image-8.png)
+![alt text](images/image-8.png)
 
 创建一个坐标系统的异步测试项目
 ```
 creisp test/coord_sys/start
 ```
 
-![alt text](image-7.png)
+![alt text](images/image-7.png)
 
 打开mot_uav:test/coord_sys/start
 
-修改测试程序执行者为mot_uav的一个实例（使用test数据模板生成）
+修改测试程序执行者为mot_uav的一个实例（使用test数据模板生成即可）
 
 ```
 #mot_uav:test/coord_sys/start
@@ -473,7 +423,7 @@ reload
 function mot_uav:test/coord_sys/start
 ```
 
-![alt text](image-10.png)
+![alt text](images/image-10.png)
 
 我们给mot_uav引入角速度
 
@@ -496,7 +446,7 @@ _this:{
 
 打开mot终端，输入回车同步代码
 
-![alt text](image-11.png)
+![alt text](images/image-11.png)
 
 可以看到mot提醒我们_init函数发生了更新，这是因为我们给临时对象添加了新的字段，mot需要创建对应的记分板
 
@@ -674,7 +624,7 @@ function marker_control:data/_store
 cre test/angular/s0 test/angular/s1 test/angular/s2 test/angular/s3
 ```
 
-![alt text](image-12.png)
+![alt text](images/image-12.png)
 
 这里的状态函数在mot记忆中没有对应的模板，因此不需要加入白名单即可自由编辑
 
@@ -792,7 +742,7 @@ reload
 function mot_uav:angular/start
 ```
 
-![alt text](image-13.png)
+![alt text](images/image-13.png)
 
 我们给mot_uav引入平动速度
 
@@ -894,11 +844,11 @@ function mot_uav:_init
 function mot_uav:test/velocity/start
 ```
 
-![alt text](image-15.png)
+![alt text](images/image-15.png)
 
 观察到移动的坐标系即成功
 
-## 构建mot_uav展示实体
+### 构建mot_uav展示实体
 
 打开mot终端，创建一个异步测试项目名为display
 
@@ -906,7 +856,7 @@ function mot_uav:test/velocity/start
 creisp test/display/start
 ```
 
-![alt text](image-16.png)
+![alt text](images/image-16.png)
 
 编写test/display/main，不断销毁和生成mot_uav实例
 
@@ -941,7 +891,7 @@ kill @e[tag=test]
 protect _new
 ```
 
-![alt text](image-17.png)
+![alt text](images/image-17.png)
 
 打开mot_memory/objects/global_settings，修改全局设置
 
@@ -1087,7 +1037,7 @@ reload
 function mot_uav:test/display/start
 ```
 
-![alt text](image-19.png)
+![alt text](images/image-19.png)
 
 实例生成成功
 
@@ -1114,7 +1064,7 @@ reload
 scoreboard players set test int 1
 ```
 
-![alt text](image-20.png)
+![alt text](images/image-20.png)
 
 修改大小成功
 
@@ -1147,7 +1097,7 @@ execute as @e[tag=result,limit=1] run function mot_uav:set
 protect _del
 ```
 
-![alt text](image-21.png)
+![alt text](images/image-21.png)
 
 ```
 #mot_uav:_del
@@ -1165,7 +1115,7 @@ reload
 scoreboard players set test int 1
 ```
 
-![alt text](image-22.png)
+![alt text](images/image-22.png)
 
 我们调整fan_0和fan_1的transformation.scale，分别设置为
 
@@ -1218,9 +1168,9 @@ execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players
 execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get quat_w int
 # 成功修改姿态才会播放插值动画
 data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
-execute store success score sres int run data modify storage mot_uav:io cmp set from storage math:io xyzw
-execute if score sres int matches 1 run data modify entity @s start_interpolation set value 0
 data modify entity @s transformation.left_rotation set from storage math:io xyzw
+execute store success score sres int run data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
+execute if score sres int matches 1 run data modify entity @s start_interpolation set value 0
 execute on passengers run function mot_uav:display/sync_pose
 
 function mot_uav:_store
@@ -1235,7 +1185,7 @@ execute unless score y int matches -640000..5120000 run function mot_uav:_del
 cre display/sync_pose
 ```
 
-![alt text](image-23.png)
+![alt text](images/image-23.png)
 
 由于这里没有display/sync_pose的对应模板，我们不必把它加入白名单
 
@@ -1266,7 +1216,7 @@ execute if score sres int matches 1 run data modify entity @s start_interpolatio
 cre display/init
 ```
 
-![alt text](image-24.png)
+![alt text](images/image-24.png)
 
 编写display/init创建这些记分板
 
@@ -1283,7 +1233,7 @@ scoreboard objectives add w dummy
 
 打开mot终端输入回车同步代码
 
-![alt text](image-25.png)
+![alt text](images/image-25.png)
 
 进入游戏重载并执行初始化
 
@@ -1309,7 +1259,7 @@ execute as @e[tag=result,limit=1] run function mot_uav:set
 cre set_uvw
 ```
 
-![alt text](image-26.png)
+![alt text](images/image-26.png)
 
 实现set_uvw函数
 
@@ -1330,11 +1280,13 @@ reload
 function mot_uav:test/angular/start
 ```
 
-![alt text](image-27.png)
+![alt text](images/image-27.png)
 
 观察到转动的无人机即成功
 
-## 构建冲量的临时对象
+## 第二节：物理模拟计算
+
+### 构建冲量的临时对象
 
 打开mot终端，新建冲量的目录和接口
 
@@ -1342,7 +1294,7 @@ function mot_uav:test/angular/start
 cre impulse/_apply impulse/_render
 ```
 
-![alt text](image-28.png)
+![alt text](images/image-28.png)
 
 我们在impulse目录中手动创建.doc.mcfo，用于描述冲量的临时对象
 
@@ -1412,7 +1364,7 @@ function mot_uav:angular/_update
 creisp _consts
 ```
 
-![alt text](image-29.png)
+![alt text](images/image-29.png)
 
 ```
 #mot_uav:_consts
@@ -1465,7 +1417,7 @@ scoreboard players operation impulse_fz int /= 2 int
 creisp test/impulse/start
 ```
 
-![alt text](image-30.png)
+![alt text](images/image-30.png)
 
 修改测试程序实体为mot_uav实例，并把测试运行时间设置为5秒
 
@@ -1589,7 +1541,7 @@ function mot_uav:_init
 function mot_uav:test/impulse/start
 ```
 
-## 阻尼，重力，碰撞
+### 阻尼，重力，碰撞
 
 编写_consts，设置阻尼和重力的常量
 
@@ -1710,7 +1662,7 @@ execute if score loop int matches 1.. as 0-0-0-0-0 run function mot_uav:collisio
 cre collision/loop
 ```
 
-![alt text](image-31.png)
+![alt text](images/image-31.png)
 
 编写collision/loop，扫描每一个碰撞点
 
@@ -1767,7 +1719,7 @@ mot的预设模板与perf包也进行了对接，因此可以比较方便地构�
 creisp perf/if_block/_start
 ```
 
-![alt text](image-33.png)
+![alt text](images/image-33.png)
 
 编写perf/if_block/_start，设置测试环境
 
@@ -1806,7 +1758,7 @@ data modify storage perf:io afk set value ["powerload", "benchmark", "mot_uav:pe
 
 等待性能测试运行完毕
 
-![alt text](image-34.png)
+![alt text](images/image-34.png)
 
 可以看到，两条if_block（成功和失败情况）加起来的开销大约只有4~5条记分板
 
@@ -1816,7 +1768,7 @@ data modify storage perf:io afk set value ["powerload", "benchmark", "mot_uav:pe
 cre collision/_get_norm
 ```
 
-![alt text](image-32.png)
+![alt text](images/image-32.png)
 
 编写collision/_get_norm
 
@@ -1975,7 +1927,7 @@ function mot_uav:_consts
 function mot_uav:test/impulse/start
 ```
 
-![alt text](image-35.png)
+![alt text](images/image-35.png)
 
 我们观察到实体对象不断在地上翻滚
 
@@ -1985,7 +1937,7 @@ function mot_uav:test/impulse/start
 creisp test/fall/start
 ```
 
-![alt text](image-36.png)
+![alt text](images/image-36.png)
 
 编写test/fall/start，设置测试实体和测试时间
 
@@ -2017,7 +1969,7 @@ reload
 function mot_uav:test/fall/start
 ```
 
-![alt text](image-37.png)
+![alt text](images/image-37.png)
 
 我们观察到，实体对象明明是竖直下落的，但它仍然在地上打滚
 
@@ -2037,7 +1989,7 @@ function mot_uav:test/fall/start
 cre impulse/_model impulse/_proj
 ```
 
-![alt text](image-38.png)
+![alt text](images/image-38.png)
 
 我们手动实现这两个接口
 
@@ -2102,7 +2054,7 @@ data modify storage mot_uav:io list_impulse append from storage mot_uav:io resul
 cre collision/apply collision/apply_loop
 ```
 
-![alt text](image-39.png)
+![alt text](images/image-39.png)
 
 编写collision/apply
 
@@ -2147,7 +2099,7 @@ reload
 function mot_uav:test/fall/start
 ```
 
-![alt text](image-40.png)
+![alt text](images/image-40.png)
 
 观察到无人机一直在地面弹跳，弹性疑似有点太好了
 
@@ -2171,7 +2123,7 @@ function mot_uav:_consts
 function mot_uav:test/fall/start
 ```
 
-![alt text](image-41.png)
+![alt text](images/image-41.png)
 
 观察到无人机在地面颤抖
 
@@ -2181,6 +2133,1456 @@ function mot_uav:test/fall/start
 function mot_uav:test/impulse/start
 ```
 
-![alt text](image-42.png)
+![alt text](images/image-42.png)
 
 无人机不会在地上打滚了
+
+接下来，让我们解决无人机的着陆判定问题
+
+修改collision/apply
+
+```
+#mot_uav:collision/apply
+# mot_uav:main调用
+
+# 获取冲量数量
+execute store result score cnt_impulse int run data get storage mot_uav:io list_impulse
+
+# 求解冲量的向量部分之和
+scoreboard players set vec_x int 0
+scoreboard players set vec_y int 0
+scoreboard players set vec_z int 0
+scoreboard players operation loop int = cnt_impulse int
+function mot_uav:collision/sum_loop
+
+# 着陆条件判定
+function math:vec/_energy
+scoreboard players operation res int > 1 int
+execute if score res int < mot_uav_st int as 0-0-0-0-0 run function mot_uav:collision/surface
+# 如果着陆就不再运行碰撞
+execute if score res int matches 0 run return fail
+
+# 遍历并施加每个冲量
+function mot_uav:collision/apply_loop
+```
+
+修改_consts，设置常量mot_uav_st
+
+```
+#mot_uav:_consts
+...
+
+# 着陆能量阈值
+scoreboard players set mot_uav_st int 2560000
+
+...
+```
+
+打开mot终端，创建collision/sum_loop函数
+
+```
+cre collision/sum_loop
+```
+
+![alt text](images/image-43.png)
+
+编写collision/sum_loop
+
+```
+#mot_uav:collision/sum_loop
+# mot_uav:collision/apply调用
+
+# 把冲量的数据模板投射到临时对象
+data modify storage mot_uav:io input set from storage mot_uav:io list_impulse[0]
+function mot_uav:impulse/_proj
+scoreboard players operation vec_x int += impulse_fx int
+scoreboard players operation vec_y int += impulse_fy int
+scoreboard players operation vec_z int += impulse_fz int
+
+# 扫描每个冲量
+data modify storage mot_uav:io list_impulse append from storage mot_uav:io list_impulse[0]
+data remove storage mot_uav:io list_impulse[0]
+scoreboard players remove loop int 1
+execute if score loop int matches 1.. run function mot_uav:collision/sum_loop
+```
+
+打开mot终端，创建collision/surface函数
+
+![alt text](images/image-44.png)
+
+编写collision/surface
+
+```
+#mot_uav:collision/surface
+# mot_uav:collision/apply调用
+
+# 法向量方向检测
+execute store result storage math:io xyz[0] double 0.0001 run scoreboard players get impulse_fx int
+execute store result storage math:io xyz[1] double 0.0001 run scoreboard players get impulse_fy int
+execute store result storage math:io xyz[2] double 0.0001 run scoreboard players get impulse_fz int
+data modify entity @s Pos set from storage math:io xyz
+execute positioned 0.0 0.0 0.0 facing entity @s feet run tp @s ^ ^ ^1.0
+execute positioned 0.0 1.0 0.0 unless entity @s[distance=..0.1] run return fail
+
+# 四元数规整化
+function math:quat/_regular
+
+# 角度修正过大则放弃着陆
+function math:rquat/_dist_sqr
+execute if score res int > mot_uav_sa int run return fail
+
+# 应用修正四元数
+function math:rquat/_to_quat
+
+# 清空速度和角速度
+scoreboard players set vx int 0
+scoreboard players set vy int 0
+scoreboard players set vz int 0
+scoreboard players set angular_x int 0
+scoreboard players set angular_y int 0
+scoreboard players set angular_z int 0
+function mot_uav:angular/_update
+
+# 同步局部坐标系
+function math:quat/_touvw
+
+scoreboard players set res int 0
+```
+
+打开_consts设置常量mot_uav_sa
+
+```
+#mot_uav:_consts
+...
+
+# 着陆角度修正阈值
+scoreboard players set mot_uav_sa int 700
+
+...
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fall/start
+```
+
+![alt text](images/image-45.png)
+
+观察到无人机陷入了地面
+
+```
+function mot_uav:test/impulse/start
+```
+
+![alt text](images/image-46.png)
+
+而在这次，无人机则平稳着陆
+
+为了解决陷进地面问题，我们修改collision/surface, 修正着陆位置
+
+```
+#mot_uav:collision/surface
+# mot_uav:collision/apply调用
+
+...
+
+scoreboard players set res int 0
+
+# 获取底盘位置
+execute store result storage math:io xyz[0] double 0.0001 run scoreboard players get x int
+execute store result storage math:io xyz[2] double 0.0001 run scoreboard players get z int
+scoreboard players operation sstempy int = y int
+execute store result storage math:io xyz[1] double 0.0001 run scoreboard players operation sstempy int -= mot_uav_ch int
+
+# 检测是否陷进方块里面
+data modify entity @s Pos set from storage math:io xyz
+execute at @s if block ~ ~ ~ #mot_uav:pass run return run tp @s 0 0 0
+
+# 修正位置
+scoreboard players operation y int = sstempy int
+scoreboard players operation sstempy int %= 10000 int
+scoreboard players operation y int /= 10000 int
+scoreboard players operation y int *= 10000 int
+execute if score sstempy int matches 1.. run scoreboard players add y int 9990
+scoreboard players operation y int += mot_uav_ch int
+
+
+# 区块安全
+tp @s 0 0 0
+```
+
+打开_consts，设置mot_uav_ch常量
+
+```
+#mot_uav:_consts
+...
+
+# 着陆底盘距离
+scoreboard players set mot_uav_ch int 2500
+
+...
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fall/start
+```
+
+![alt text](images/image-47.png)
+
+为了给无人机地面着陆引入滑动，我们修改collision/surface
+
+```
+#mot_uav:collision/surface
+# mot_uav:collision/apply调用
+
+...
+
+# 清空速度和角速度
+#scoreboard players set vx int 0
+scoreboard players set vy int 0
+#scoreboard players set vz int 0
+scoreboard players operation vx int *= mot_uav_ek int
+scoreboard players operation vz int *= mot_uav_ek int
+scoreboard players operation vx int /= 10000 int
+scoreboard players operation vz int /= 10000 int
+scoreboard players set angular_x int 0
+scoreboard players set angular_y int 0
+scoreboard players set angular_z int 0
+function mot_uav:angular/_update
+
+...
+```
+
+打开_consts，设置mot_uav_ek常量
+
+```
+#mot_uav:_consts
+...
+
+# 着陆速度阻尼
+scoreboard players set mot_uav_ek int 9100
+
+...
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/impulse/start
+```
+
+![alt text](images/image-48.png)
+
+观察到无人机在地面上滑动一段距离后静止
+
+### 静体优化
+
+无人机着陆并停止运动后，我们不希望游戏继续运行无人机的运动计算
+
+为了实现这个功能，我们需要向无人机添加一个新的字段：motion_static
+
+我们希望motion_static的值具有以下控制功能：
+
+* 为0时表示物体运行正常的运动解算：
+	* 当物体着陆并静止后，进入状态1
+* 为1时表示物体进入了**暂时静止状态**，可能会被以下情况打破：
+	* 物体着陆下方依靠的方块消失，进入状态0
+	* 物体被施加了一个冲量，进入状态0
+	* 未来可能向无人机添加的远程控制信号，待定
+* 为-1时表示物体进入了**永久静止状态**，不会被程序自动解除
+
+打开.doc.mcfo，为mot_uav临时对象添加新的字段
+
+```
+#mot_uav:doc.mcfo
+
+# 临时对象
+_this:{
+	static:<motion_static,int>,
+	velocity:{<vx,int,1w>, <vy,int,1w>, <vz,int,1w>},
+	...
+}
+```
+
+打开mot终端，输入回车同步代码
+
+![alt text](images/image-49.png)
+
+进入游戏重新运行初始化
+
+```
+reload
+function mot_uav:_init
+```
+
+编写main函数，编写中断计算的命令
+
+```
+#mot_uav:main
+# mot_uav:tick调用
+# 实体对象主程序
+
+function mot_uav:_get
+
+# 静体优化
+execute unless score motion_static int matches 0 as 0-0-0-0-0 if function mot_uav:static/detect run return fail
+
+...
+```
+
+打开mot终端，创建static/detect函数
+
+```
+cre static/detect
+```
+
+编写static/detect，实现静体状态的判断
+
+```
+#mot_uav:static/detect
+# mot_uav:main调用
+
+# 永久静止状态直接返回1
+execute if score motion_static int matches -1 run return 1
+
+# 获取底盘位置
+execute store result storage math:io xyz[0] double 0.0001 run scoreboard players get x int
+execute store result storage math:io xyz[2] double 0.0001 run scoreboard players get z int
+scoreboard players operation sstempy int = y int
+execute store result storage math:io xyz[1] double 0.0001 run scoreboard players operation sstempy int -= mot_uav_ch int
+
+# 检测是否陷进方块里面
+data modify entity @s Pos set from storage math:io xyz
+execute at @s if block ~ ~ ~ #mot_uav:pass run scoreboard players set motion_static int 0
+# 区块安全
+tp @s 0 0 0
+
+# 如果静止状态被打破则返回0
+execute if score motion_static int matches 0 run return 0
+
+# 保持静止状态则返回1
+return 1
+```
+
+修改collision/surface函数，着陆并静止后进入静体状态
+
+```
+#mot_uav:collision/surface
+# mot_uav:collision/apply调用
+
+...
+
+# 进入静止状态
+execute if score vx int matches 0 if score vz int matches 0 run scoreboard players set motion_static int 1
+
+# 区块安全
+tp @s 0 0 0
+```
+
+修改impulse/_apply函数，打破静止状态
+
+```
+#mot_uav:impulse/_apply
+# 把冲量施加给mot_uav的临时对象
+
+...
+
+function mot_uav:angular/_update
+
+# 打破静止状态
+scoreboard players set motion_static int 0
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:test/fall/start
+```
+
+![alt text](images/image-50.png)
+
+观察到无人机静止后火焰图变矮，优化生效
+
+而当我们打掉无人机脚底的圆石后，它下坠掉进了虚空
+
+## 第三节：无人机动力
+
+### 机翼电机
+
+打开.doc.mcfo，添加机翼转动参数的字段
+
+```
+#mot_uav:doc.mcfo
+
+# 临时对象
+_this:{
+	fans:{
+		<fans_power,int,1w>,
+		<fans_theta,int,1w>
+	},
+	static:<motion_static,int>,
+	...
+}
+```
+
+打开mot终端，输入回车同步代码
+
+![alt text](images/image-51.png)
+
+进入游戏，重新运行初始化
+
+```
+reload
+function mot_uav:_init
+```
+
+打开mot终端，创建机翼电机的主函数
+
+```
+cre fans/main
+```
+
+![alt text](images/image-52.png)
+
+为了方便检索两个机翼，我们修改_new函数，为它们加上共同的标签fan
+
+```
+#mot_uav:_new
+...
+	Passengers:[\
+		{...Tags:["mot_uav_display","torch"],...},\
+		{...Tags:["mot_uav_display","fan_0","fan"],...},\
+		{...Tags:["mot_uav_display","fan_1","fan"],...},\
+	]\
+...
+```
+
+修改main函数，调用电机主函数
+
+```
+#mot_uav:main
+# mot_uav:tick调用
+# 实体对象主程序
+
+...
+
+# 机翼电机
+execute if score fans_power int matches 1.. run function mot_uav:fans/main
+
+# 同步实体坐标
+...
+```
+
+编写fans/main，实现电机主程序
+
+```
+#mot_uav:fans/main
+# mot_uav:main调用
+
+# 提供上升加速度
+scoreboard players operation vy int += fans_power int
+
+# 计算本地四元数
+scoreboard players operation theta int = fans_theta int
+execute as 0-0-0-0-0 run function math:rquat/_theta_to
+
+# 同步四元数姿态到机翼
+execute store result storage math:io xyzw[0] float 0.0001 run scoreboard players get rquat_x int
+execute store result storage math:io xyzw[1] float 0.0001 run scoreboard players get rquat_y int
+execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players get rquat_z int
+execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get rquat_w int
+execute on passengers if entity @s[tag=fan] run function mot_uav:fans/sync_rr
+
+# 按比例增加fans_theta
+scoreboard players operation sstemp int = fans_power int
+scoreboard players operation sstemp int *= mot_uav_fr int
+scoreboard players operation fans_theta int += sstemp int
+```
+
+打开_consts，设置常量mot_uav_fr
+
+```
+#mot_uav:_consts
+...
+
+# 机翼电机转动速率
+scoreboard players set mot_uav_fr int 50
+
+...
+```
+
+打开mot终端，创建fans/sync_rr函数
+
+```
+cre fans/sync_rr
+```
+
+![alt text](images/image-53.png)
+
+编写fans/sync_rr函数，同步四元数姿态
+
+```
+#mot_uav:fans/sync_rr
+# mot_uav:fans/main调用
+
+data modify entity @s transformation.right_rotation set from storage math:io xyzw
+data modify entity @s start_interpolation set value 0
+```
+
+打开mot终端，创建一个异步测试项目命名为fans
+
+```
+creisp test/fans/start
+```
+
+![alt text](images/image-54.png)
+
+打开test/fans/start，修改测试项目执行者为mot_uav实例
+
+```
+#mot_uav:test/fans/start
+
+# 生成测试程序实体
+data modify storage mot_uav:io input set from storage mot_uav:class test
+function mot_uav:_new
+
+...
+```
+
+同时在test/fans/start函数中打开机翼的电机，设置功率为重力加速度
+
+修改测试时间为5秒
+
+```
+#mot_uav:test/fans/start
+
+...
+
+# 设置测试程序运行时间
+scoreboard players set @e[tag=result,limit=1] killtime 100
+
+# 打开机翼电机
+execute as @e[tag=result,limit=1] run function mot_uav:_get
+scoreboard players operation fans_power int = mot_uav_g int
+execute as @e[tag=result,limit=1] run function mot_uav:_store
+```
+
+在test/fans/main中维持电机功率
+
+```
+#mot_uav:test/fans/main
+
+# 维持电机功率
+function mot_uav:_get
+scoreboard players operation fans_power int = mot_uav_g int
+function mot_uav:_store
+```
+
+编写test/fans/end，测试结束销毁无人机
+
+```
+#mot_uav:test/fans/end
+
+function mot_uav:_del
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-55.png)
+
+我们观察到机翼以一种非预期的，诡异的方式发生旋转
+
+这是scale变换发生在right_rotation变换之后导致的
+
+不过这个bug带来意外的发现，这种尖尖的机翼好像还挺好看的...?
+
+我们决定采纳这种新形状的机翼
+
+我们注释掉fans/main中对机翼姿态的同步
+
+```
+#mot_uav:fans/main
+...
+
+# 同步四元数姿态到机翼
+#execute store result storage math:io xyzw[0] float 0.0001 run scoreboard players get rquat_x int
+#execute store result storage math:io xyzw[1] float 0.0001 run scoreboard players get rquat_y int
+#execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players get rquat_z int
+#execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get rquat_w int
+#execute on passengers if entity @s[tag=fan] run function mot_uav:fans/sync_rr
+
+...
+```
+
+修改_new函数，设计机翼初始姿态
+
+```
+#mot_uav:_new
+...
+		{...right_rotation:[0f,0f,0f,1f],...},\
+		{...right_rotation:[0f,0.3826f,0f,0.9238f],...},\
+		{...right_rotation:[0f,0.3826f,0f,0.9238f],...},\
+...
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-56.png)
+
+机翼形态设计成功
+
+我们修改fans/main，把本地四元数姿态暂存给机翼展示实体的iquat
+
+注意这里运行_theta_to的临时对象从原来的**rquat修改为了iquat**，这是为了后面我们方便输入
+
+```
+#mot_uav:fans/main
+...
+
+# 计算本地四元数
+scoreboard players operation theta int = fans_theta int
+execute as 0-0-0-0-0 run function math:iquat/_theta_to
+execute on passengers if entity @s[tag=fan] run function math:iquat/_store
+
+...
+```
+
+我们修改_new函数，为本地四元数的展示实体添加特殊标签：local_quat
+
+```
+#mot_uav:_new
+...
+	Passengers:[\
+		{...Tags:["mot_uav_display","torch"],...},\
+		{...Tags:["mot_uav_display","fan_0","fan","local_quat"],...},\
+		{...Tags:["mot_uav_display","fan_1","fan","local_quat"],...},\
+	]\
+...
+```
+
+我们修改main函数，对local_quat展示实体和非local_quat展示实体分别运行不同的姿态同步函数
+
+```
+#mot_uav:main
+...
+# 成功修改姿态才会播放插值动画
+data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
+data modify entity @s transformation.left_rotation set from storage math:io xyzw
+execute store success score sres int run data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
+execute if score sres int matches 1 run data modify entity @s start_interpolation set value 0
+execute on passengers if entity @s[tag=!local_quat] run function mot_uav:display/sync_pose
+execute on passengers if entity @s[tag=local_quat] run function mot_uav:display/sync_local
+...
+```
+
+打开mot终端，创建display/sync_local函数
+
+```
+cre display/sync_local
+```
+
+![alt text](images/image-57.png)
+
+编写display/sync_local，同步本地四元数姿态
+
+```
+#mot_uav:display/sync_local
+# mot_uav:main调用
+
+# 同步局部坐标
+scoreboard players operation u int = @s u
+scoreboard players operation v int = @s v
+scoreboard players operation w int = @s w
+function math:uvw/_tofvec
+execute store result storage mot_uav:io translation[0] float 0.0001 run scoreboard players get fvec_x int
+execute store result storage mot_uav:io translation[1] float 0.0001 run scoreboard players get fvec_y int
+execute store result storage mot_uav:io translation[2] float 0.0001 run scoreboard players get fvec_z int
+data modify entity @s transformation.translation set from storage mot_uav:io translation
+
+# 将本地四元数姿态iquat右乘给整体四元数姿态quat，输出为rquat
+function math:iquat/_get
+function math:quat/_pre_mult
+execute store result storage math:io xyzw[0] float 0.0001 run scoreboard players get rquat_x int
+execute store result storage math:io xyzw[1] float 0.0001 run scoreboard players get rquat_y int
+execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players get rquat_z int
+execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get rquat_w int
+
+# 成功修改姿态才会播放插值动画
+data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
+data modify entity @s transformation.left_rotation set from storage math:io xyzw
+execute store success score sres int run data modify storage mot_uav:io cmp set from entity @s transformation.left_rotation
+execute if score sres int matches 1 run data modify entity @s start_interpolation set value 0
+```
+
+无人机的两个机翼是共享相同的四元数姿态的
+
+然而我们在这里进行了分别计算，**因此这里有一定的性能优化空间**
+
+进入游戏，重新运行测试
+
+```
+reload
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-58.png)
+
+观察到无人机转动的螺旋桨
+
+这里由于作者的个人喜好，将螺旋桨转动方向修改为从上往下看逆时针（符合y轴右手螺旋）
+
+修改fans/main，将最后的 += 修改为 -= 
+
+```
+# 按比例增加fans_theta
+scoreboard players operation sstemp int = fans_power int
+scoreboard players operation sstemp int *= mot_uav_fr int
+scoreboard players operation fans_theta int -= sstemp int
+```
+
+修改mot_uav_fr常量，加快机翼转动速率
+
+```
+#mot_uav:_consts
+# 创建常量
+
+...
+
+# 机翼电机转动速率
+scoreboard players set mot_uav_fr int 850
+
+...
+```
+
+打开test/fans/start，修改测试运行时间
+
+```
+#mot_uav:test/fans/start
+
+...
+
+# 设置测试程序运行时间
+scoreboard players set @e[tag=result,limit=1] killtime 300
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-59.png)
+
+观察到无人机机翼快速转动
+
+打开mot终端，创建机翼电机控制开关
+
+```
+cre fans/_on fans/_off fans/update_torch
+```
+
+![alt text](images/image-60.png)
+
+编写fans/_on和fans/_off
+
+```
+#mot_uav:fans/_on
+# 打开机翼电机
+# 以mot_uav实例为执行者
+
+scoreboard players set @s fans_power 1
+# 关闭静体优化
+scoreboard players set @s motion_static 0
+function mot_uav:fans/update_torch
+```
+
+```
+#mot_uav:fans/_off
+# 打开机翼电机
+# 以mot_uav实例为执行者
+
+scoreboard players set @s fans_power 0
+function mot_uav:fans/update_torch
+```
+
+修改fans/main，机翼电机运行时关闭静体优化
+
+```
+#mot_uav:fans/main
+...
+
+# 关闭静体优化
+scoreboard players set motion_static int 0
+```
+
+修改mot_uav:_new，追加新的初始化实例函数
+
+```
+#mot_uav:_new
+...
+execute as @e[tag=result,limit=1] run function mot_uav:set
+execute as @e[tag=result,limit=1] run function mot_uav:set_operations
+```
+
+打开mot终端，创建set_operations函数
+
+```
+cre set_operations
+```
+
+![alt text](images/image-61.png)
+
+编写set_operations函数
+
+```
+#mot_uav:set_operations
+# mot_uav:_new调用
+
+# 同步机翼电机开关
+function mot_uav:fans/update_torch
+```
+
+修改main函数，同步机翼电机开关
+
+```
+#mot_uav:main
+...
+
+# 同步机翼电机开关
+scoreboard players set temp int 1
+execute if score @s fans_power matches 0 if score fans_power int matches 1.. run scoreboard players set temp int 0
+execute if score @s fans_power matches 1.. if score fans_power int matches 0 run scoreboard players set temp int 0
+execute if score temp int matches 0 run function mot_uav:fans/_update
+function mot_uav:_store
+
+...
+```
+
+打开mot终端，创建fans/_update接口
+
+```
+cre fans/_update
+```
+
+![alt text](images/image-62.png)
+
+编写fans/_update接口
+
+```
+#mot_uav:fans/_update
+# 由临时对象更新实例的机翼电机
+# 以mot_uav实例为执行者
+
+scoreboard players operation @s fans_power = fans_power int
+function mot_uav:fans/update_torch
+```
+
+编写fans/update_torch函数
+
+```
+#mot_uav:fans/update_torch
+# mot_uav:fans/_on调用
+# mot_uav:fans/_off调用
+# mot_uav:fans/_update调用
+# mot_uav:set_operations调用
+
+data modify storage mot_uav:io temp set value "false"
+execute if score @s fans_power matches 1.. run data modify storage mot_uav:io temp set value "true"
+
+execute on passengers if entity @s[tag=torch] run \
+	data modify entity @s block_state.Properties.lit set from storage mot_uav:io temp
+```
+
+打开mot终端，创建一个异步测试项目，命名为general
+
+```
+creisp test/general/start
+```
+
+![alt text](images/image-64.png)
+
+打开test/general/start
+
+修改测试项目执行者为mot_uav实例，设置test初始信号为0
+
+```
+#mot_uav:test/general/start
+
+# 生成测试程序实体
+data modify storage mot_uav:io input set from storage mot_uav:class test
+function mot_uav:_new
+tag @e[tag=result,limit=1] add test
+
+...
+
+scoreboard players set test int 0
+```
+
+编写test/general/main，实现测试存在时间逻辑
+
+```
+#mot_uav:test/general/main
+
+# test信号为1结束测试
+execute if score test int matches 1 run return fail
+
+# 刷新存在时间
+scoreboard players set @s killtime 10
+```
+
+编写test/general/end，销毁测试实例
+
+```
+#mot_uav:test/general/end
+
+function mot_uav:_del
+```
+
+进入游戏，运行测试
+
+```
+reload
+function mot_uav:test/general/start
+```
+
+![alt text](images/image-65.png)
+
+观察到无人机的机翼消失
+
+我们查看的机翼展示实体参数
+
+```
+execute as @e[tag=fan] run data get entity @s transformation
+```
+
+![alt text](images/image-66.png)
+
+它们的left_rotation居然变成了NaN
+
+我们修改test/general/start，使测试仅运行1次迭代
+
+```
+#mot_uav:test/general/start
+
+...
+
+scoreboard players set test int 0
+
+# debug
+execute as @e[tag=result,limit=1] run function mot_uav:main
+execute as @e[tag=result,limit=1] run function mot_uav:_del
+```
+
+打开mot_uav/display/sync_local，输出数据
+
+```
+#mot_uav:display/sync_local
+...
+
+# 将本地四元数姿态iquat右乘给整体四元数姿态quat，输出为rquat
+tellraw @a "---"
+function math:iquat/_print_xyzw
+function math:quat/_print_xyzw
+function math:iquat/_get
+function math:quat/_pre_mult
+function math:rquat/_print_xyzw
+execute store result storage math:io xyzw[0] float 0.0001 run scoreboard players get rquat_x int
+execute store result storage math:io xyzw[1] float 0.0001 run scoreboard players get rquat_y int
+execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players get rquat_z int
+execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get rquat_w int
+tellraw @a ["xyzw: ", {"nbt":"xyzw","storage":"math:io"}]
+
+...
+```
+
+进入游戏重新运行测试
+
+```
+scoreboard players set test int 1
+reload
+function mot_uav:test/general/start
+```
+
+![alt text](images/image-67.png)
+
+可以看到，四元数输出为全0，但也不是NaN
+
+全0是由于我们忘记给mot_uav实例初始化的时候设置机翼的本地四元数
+
+可NaN又是怎么回事呢？
+
+我们猜想，**给展示实体的四元数赋值全0后会被转变为NaN**
+
+打开mot终端，创建一个测试命名为nan
+
+```
+creisp test/nan
+```
+
+![alt text](images/image-68.png)
+
+编写test/nan
+
+```
+#mot_uav:test/nan
+
+tellraw @a "--- mot_uav nan result ---"
+
+tag @e[tag=result] remove result
+summon item_display 0 0 0 {Tags:["result"]}
+
+data modify entity @e[tag=result,limit=1] transformation.left_rotation set value [0.0f,0.0f,0.0f,0.0f]
+tellraw @a ["lr: ", {"nbt":"transformation.left_rotation","entity":"@e[tag=result,limit=1]"}]
+
+kill @e[tag=result,limit=1]
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:test/nan
+```
+
+![alt text](images/image-69.png)
+
+猜想正确
+
+编写set_operations函数，初始化本地四元数
+
+```
+#mot_uav:set_operations
+# mot_uav:_new调用
+
+# 同步机翼电机开关
+function mot_uav:fans/update_torch
+
+# 初始化本地四元数
+execute on passengers if entity @s[tag=local_quat] run scoreboard players set @s iquat_w 10000
+```
+
+注释掉test/general/start中的debug程序
+
+```
+#mot_uav:test/general/start
+
+...
+
+scoreboard players set test int 0
+
+# debug
+#execute as @e[tag=result,limit=1] run function mot_uav:main
+#execute as @e[tag=result,limit=1] run function mot_uav:_del
+```
+
+删除display/sync_local中的debug输出
+
+```
+#mot_uav:display/sync_local
+...
+
+# 将本地四元数姿态iquat右乘给整体四元数姿态quat，输出为rquat
+function math:iquat/_get
+function math:quat/_relative
+execute store result storage math:io xyzw[0] float 0.0001 run scoreboard players get rquat_x int
+execute store result storage math:io xyzw[1] float 0.0001 run scoreboard players get rquat_y int
+execute store result storage math:io xyzw[2] float 0.0001 run scoreboard players get rquat_z int
+execute store result storage math:io xyzw[3] float 0.0001 run scoreboard players get rquat_w int
+
+...
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:test/general/start
+```
+
+![alt text](images/image-70.png)
+
+观察到熄灭信号灯的无人机
+
+我们打开无人机的机翼电机
+
+```
+execute as @e[tag=test,limit=1] run function mot_uav:fans/_on
+```
+
+![alt text](images/image-71.png)
+
+信号灯亮起
+
+检查静体优化的开关
+
+```
+scoreboard objectives setdisplay sidebar motion_static
+```
+
+信号灯亮起时，**motion_static的值为0**
+
+如果发现这里的值为1，很可能是main函数中fans/main的调用时序有误，
+
+请返回"修改main函数，调用电机主函数"检查代码的插入位置
+
+结束测试程序
+
+```
+scoreboard players set test int 1
+```
+
+### 角速度阻尼
+
+修改test/fans/main，生成测试实例0.5秒后为其施加冲量
+
+```
+#mot_uav:test/fans/main
+
+# 维持电机功率
+function mot_uav:_get
+scoreboard players operation fans_power int = mot_uav_g int
+function mot_uav:_store
+
+# 过滤执行时刻
+execute unless score @s killtime matches 290 run return fail
+
+# 获取局部坐标系左上方作为冲量的作用点
+scoreboard players set u int 2500
+scoreboard players set v int 2500
+scoreboard players set w int 0
+function math:uvw/_tovec
+scoreboard players operation impulse_x int = vec_x int
+scoreboard players operation impulse_y int = vec_y int
+scoreboard players operation impulse_z int = vec_z int
+
+# 获取冲量的大小和方向
+scoreboard players set u int -7500
+scoreboard players set v int 2500
+scoreboard players set w int 0
+function math:uvw/_tovec
+scoreboard players operation impulse_fx int = vec_x int
+scoreboard players operation impulse_fy int = vec_y int
+scoreboard players operation impulse_fz int = vec_z int
+scoreboard players operation impulse_fx int -= impulse_x int
+scoreboard players operation impulse_fy int -= impulse_y int
+scoreboard players operation impulse_fz int -= impulse_z int
+
+# 渲染冲量
+execute as @e[tag=math_marker,limit=1] run function mot_uav:impulse/_render
+
+# 施加冲量
+function mot_uav:impulse/_apply
+
+function mot_uav:_store
+```
+
+进入游戏运行测试
+
+```
+reload
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-72.png)
+
+观察到无人机倾倒后，依然能靠机翼的升力悬停在空中，
+
+这显然是非常不合理的
+
+因此我们希望，当无人机的机翼升力足够大时，
+
+能够运行角速度阻尼，对无人机的姿态进行回正
+
+修改fans/main，调用角速度阻尼函数
+
+```
+#mot_uav:fans/main
+# mot_uav:main调用
+
+# 提供上升加速度
+scoreboard players operation vy int += fans_power int
+
+# 角速度阻尼
+execute if score fans_power int >= mot_uav_ft int as 0-0-0-0-0 run function mot_uav:fans/spin
+
+...
+```
+
+打开_consts，设置mot_uav_ft常量
+
+```
+#mot_uav:_consts
+...
+
+# 机翼角速度阻尼阈值
+scoreboard players set mot_uav_ft int 100
+```
+
+打开mot终端，创建fans/spin函数
+
+```
+cre fans/spin
+```
+
+编写fans/spin函数，实现角速度阻尼
+
+```
+#mot_uav:fans/spin
+# mot_uav:fans/main调用
+
+# 设置阻尼参数
+scoreboard players operation damp_k int = mot_uav_fk int
+scoreboard players operation damp_f int = mot_uav_ff int
+scoreboard players set damp_b int 10000
+
+# 计算当前局部坐标系j轴和y轴夹角damp_x
+scoreboard players operation inp int = jvec_y int
+scoreboard players operation inp int *= inp int
+scoreboard players remove inp int 100000000
+scoreboard players operation inp int *= -1 int
+scoreboard players operation inp int > 0 int
+function math:_sqrt
+execute store result storage math:io xyz[2] double 0.0001 run scoreboard players get jvec_y int
+execute store result storage math:io xyz[0] double 0.0001 run scoreboard players get res int
+data modify entity @s Pos set from storage math:io xyz
+execute positioned 0.0 0.0 0.0 facing entity @s feet run tp @s ~ ~ ~ ~ ~
+execute store result score damp_x int run data get entity @s Rotation[0] -10000
+scoreboard players operation damp_x int %= 3600000 int
+
+# 计算回正旋转轴uvec
+scoreboard players set vec_y int 0
+scoreboard players operation vec_x int = jvec_z int
+scoreboard players operation vec_z int = jvec_x int
+scoreboard players operation vec_z int *= -1 int
+function math:vec/_norm
+
+# 计算当前角速度沿旋转轴分量damp_v
+scoreboard players operation damp_v int = angular_x int
+scoreboard players operation damp_v int *= uvec_x int
+scoreboard players operation sstemp int = angular_y int
+scoreboard players operation sstemp int *= uvec_y int
+scoreboard players operation damp_v int += sstemp int
+scoreboard players operation sstemp int = angular_z int
+scoreboard players operation sstemp int *= uvec_z int
+scoreboard players operation damp_v int += sstemp int
+scoreboard players operation damp_v int /= 10000 int
+
+# 判定阻尼运动终止
+function math:damp/_energy
+scoreboard players operation temp_e int = res int
+function math:damp/_threshold
+execute if score temp_e int <= res int run return fail
+
+# 阻尼迭代
+scoreboard players operation temp_v int = damp_v int
+function math:damp/_iter
+
+# 计算角速度变化量
+scoreboard players operation damp_v int -= temp_v int
+scoreboard players operation uvec_x int *= damp_v int
+scoreboard players operation uvec_y int *= damp_v int
+scoreboard players operation uvec_z int *= damp_v int
+scoreboard players operation uvec_x int /= 10000 int
+scoreboard players operation uvec_y int /= 10000 int
+scoreboard players operation uvec_z int /= 10000 int
+
+# 更新角速度
+scoreboard players operation angular_x int += uvec_x int
+scoreboard players operation angular_y int += uvec_y int
+scoreboard players operation angular_z int += uvec_z int
+function mot_uav:angular/_update
+```
+
+打开_consts，设置mot_uav_fk, mot_uav_ff常量
+
+```
+#mot_uav:_consts
+...
+
+# 机翼角速度阻尼系数
+scoreboard players set mot_uav_fk int 9100
+
+# 机翼角速度阻尼冲量
+scoreboard players set mot_uav_ff int 350
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-73.png)
+
+观察到无人机平稳飞行
+
+修改test/fans/main，尝试增大冲量
+
+```
+#mot_uav:test/fans/main
+
+...
+
+# 获取局部坐标系左上方作为冲量的作用点
+scoreboard players set u int 2500
+scoreboard players set v int 10000
+scoreboard players set w int 0
+function math:uvw/_tovec
+scoreboard players operation impulse_x int = vec_x int
+scoreboard players operation impulse_y int = vec_y int
+scoreboard players operation impulse_z int = vec_z int
+
+# 获取冲量的大小和方向
+scoreboard players set u int -12500
+scoreboard players set v int 10000
+scoreboard players set w int 0
+function math:uvw/_tovec
+scoreboard players operation impulse_fx int = vec_x int
+scoreboard players operation impulse_fy int = vec_y int
+scoreboard players operation impulse_fz int = vec_z int
+scoreboard players operation impulse_fx int -= impulse_x int
+scoreboard players operation impulse_fy int -= impulse_y int
+scoreboard players operation impulse_fz int -= impulse_z int
+
+...
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-74.png)
+
+观察到无人机倾斜后顺利回正
+
+我们尝试修改阻尼系数常量大小
+
+```
+#mot_uav:_consts
+...
+
+# 机翼角速度阻尼系数
+scoreboard players set mot_uav_fk int 9300
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-75.png)
+
+观察到无人机回正速度很慢
+
+打开fans/spin，稍微修改一下阻尼算法
+
+```
+#mot_uav:fans/spin
+# mot_uav:fans/main调用
+
+# 设置阻尼参数
+scoreboard players operation damp_k int = mot_uav_fk int
+#scoreboard players operation damp_f int = mot_uav_ff int
+scoreboard players set damp_b int 10000
+
+# 计算当前局部坐标系j轴和y轴夹角damp_x
+...
+scoreboard players operation damp_x int %= 3600000 int
+
+# 阻尼冲量参数
+scoreboard players operation damp_f int = damp_x int
+scoreboard players operation damp_f int /= mot_uav_fm int
+scoreboard players operation damp_f int > mot_uav_ff int
+```
+
+打开_consts，设置mot_uav_fm常量
+
+```
+#mot_uav:_consts
+...
+
+# 机翼角速度阻尼惯量
+scoreboard players set mot_uav_fm int 100
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:_consts
+function mot_uav:test/fans/start
+```
+
+![alt text](images/image-76.png)
+
+观察到无人机回正速度更快了
+
+修改test/fans/start，打开信号灯
+
+```
+#mot_uav:test/fans/start
+
+...
+
+# 打开机翼电机
+execute as @e[tag=result,limit=1] run function mot_uav:fans/_on
+execute as @e[tag=result,limit=1] run function mot_uav:_get
+scoreboard players operation fans_power int = mot_uav_g int
+execute as @e[tag=result,limit=1] run function mot_uav:_store
+```
+
+修改test/fans/main，取消电机功率维持
+
+```
+#mot_uav:test/fans/main
+
+# 维持电机功率
+#function mot_uav:_get
+#scoreboard players operation fans_power int = mot_uav_g int
+#function mot_uav:_store
+
+...
+```
+
+进入游戏重新运行测试
+
+```
+reload
+function mot_uav:test/fans/start
+execute as @e[tag=mot_uav] run function mot_uav:fans/_off
+```
+
+![alt text](images/image-77.png)
+
+无人机成功落地

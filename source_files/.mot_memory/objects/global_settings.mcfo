@@ -26,5 +26,5 @@ entity_type:marker
 
 # 初始化模块时创建的接口
 init_interfaces:{
-	_get,_store,_new,set,del,main,tick
+	_get,_store,_new,set,_del,main,tick
 }
