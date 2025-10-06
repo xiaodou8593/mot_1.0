@@ -32,3 +32,6 @@ scoreboard players operation angular_y int -= vec_y int
 scoreboard players operation angular_z int -= vec_z int
 
 function mot_uav:angular/_update
+
+# 打破静止状态
+scoreboard players set motion_static int 0

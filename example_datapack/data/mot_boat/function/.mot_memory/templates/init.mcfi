@@ -1,0 +1,6 @@
+#$(module_prefix)init
+# 初始化$(module_name)模块
+
+$init $(nbt _this and not global_default)
+
+$create $(score _entity and not global_default)

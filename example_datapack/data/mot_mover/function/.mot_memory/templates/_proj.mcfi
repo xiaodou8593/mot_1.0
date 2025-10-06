@@ -1,0 +1,5 @@
+#$(module_prefix)_proj
+# 把数据模板投射到临时对象
+# 输入数据模板storage $(project_name):io input
+
+$assign $(_this) $(_input_plate)

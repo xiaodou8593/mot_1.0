@@ -1,0 +1,8 @@
+#$(module_prefix)_copy
+# 从实体对象提取数据模板
+# 输入执行实体
+# 输出数据模板storage $(project_name):io result
+
+$init $(_result_plate)
+
+$assign $(_result_plate) $(_entity)

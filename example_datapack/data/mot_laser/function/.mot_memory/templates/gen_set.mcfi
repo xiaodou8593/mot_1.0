@@ -1,0 +1,6 @@
+#$(module_prefix)gen_set
+# $(module_prefix)_gen调用
+
+$assign $(score _entity) $(score _this)
+
+$assign $(nbt _entity) $(nbt _this)

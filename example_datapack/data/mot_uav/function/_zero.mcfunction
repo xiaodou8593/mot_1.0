@@ -1,6 +1,15 @@
 #mot_uav:_zero
 # 把临时对象的全部数据置0
 
+scoreboard players set left_slot_id int 0
+scoreboard players set down_slot_id int 0
+scoreboard players set right_slot_id int 0
+data modify storage mot_uav:io program set value {}
+data modify storage mot_uav:io list_impulse set value []
+scoreboard players set fans_power int 0
+scoreboard players set fans_theta int 0
+scoreboard players set fans_timer int 0
+scoreboard players set motion_static int 0
 scoreboard players set vx int 0
 scoreboard players set vy int 0
 scoreboard players set vz int 0

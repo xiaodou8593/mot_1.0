@@ -1,0 +1,3 @@
+#$(module_prefix)tick
+
+execute as @e[tag=$(module_name)] run function $(module_prefix)main

@@ -1,0 +1,11 @@
+mot_whitelist: {
+	_init,
+	tick,
+	main,
+	_new,
+	_del,
+	_class,
+	test/display/start,
+	test/display/end,
+	test/display/main
+}

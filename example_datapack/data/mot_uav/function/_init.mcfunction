@@ -3,7 +3,16 @@
 
 forceload add -1 -1 1 1
 
+data modify storage mot_uav:io program set value {}
+data modify storage mot_uav:io list_impulse set value []
 
+scoreboard objectives add left_slot_id dummy
+scoreboard objectives add down_slot_id dummy
+scoreboard objectives add right_slot_id dummy
+scoreboard objectives add fans_power dummy
+scoreboard objectives add fans_theta dummy
+scoreboard objectives add fans_timer dummy
+scoreboard objectives add motion_static dummy
 scoreboard objectives add vx dummy
 scoreboard objectives add vy dummy
 scoreboard objectives add vz dummy
@@ -55,3 +64,5 @@ function mot_uav:_consts
 function mot_uav:_class
 
 function mot_uav:display/init
+function mot_uav:guis/init
+function mot_uav:program/init

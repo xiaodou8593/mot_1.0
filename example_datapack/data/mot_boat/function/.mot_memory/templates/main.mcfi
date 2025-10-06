@@ -1,0 +1,7 @@
+#$(module_prefix)main
+# $(module_prefix)tick调用
+# 实体对象主程序
+
+function $(module_prefix)_get
+
+function $(module_prefix)_store

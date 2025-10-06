@@ -1,0 +1,6 @@
+#mot_boat:doc.mcfo
+
+# 临时对象
+_this:{
+	mot_uav_root:<mot_uav_root,int>
+}

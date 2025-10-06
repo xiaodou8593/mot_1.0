@@ -1,0 +1,7 @@
+#module_control:data/doc.mcfo
+
+# 模块信息协议
+_input_plate: {
+	prefix: [storage module_control:io input.prefix, String],
+	namespace: [storage module_control:io input.namespace, String]
+}

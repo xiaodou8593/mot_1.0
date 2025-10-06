@@ -61,4 +61,6 @@ scoreboard players operation impulse_fy int /= 10000 int
 scoreboard players operation impulse_fz int /= 10000 int
 
 # 对mot_uav临时对象施加矢量
-function mot_uav:impulse/_apply
+#function mot_uav:impulse/_apply
+function mot_uav:impulse/_model
+data modify storage mot_uav:io list_impulse append from storage mot_uav:io result

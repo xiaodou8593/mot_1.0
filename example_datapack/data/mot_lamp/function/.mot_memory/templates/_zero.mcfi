@@ -1,0 +1,4 @@
+#$(module_prefix)_zero
+# 把临时对象的全部数据置0
+
+$init $(_this)

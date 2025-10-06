@@ -1,0 +1,8 @@
+#mot_mover:block/doc.mcfo
+
+# 方块的临时对象
+_this: {
+	block_id:[storage mot_mover:io block_id,String],
+	block_state:[storage mot_mover:io block_state,Compound],
+	block_nbt:[storage mot_mover:io block_nbt,Compound]
+}

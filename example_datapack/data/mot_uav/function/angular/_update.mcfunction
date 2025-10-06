@@ -1,6 +1,7 @@
 #mot_uav:angular/_update
 
 # 把当前四元数姿态设置为旋转的初始姿态
+execute as 0-0-0-0-0 run function math:quat/_norm
 function math:quat/_topose
 
 # 计算角速度的单位向量和模长

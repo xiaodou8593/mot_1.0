@@ -1,0 +1,3 @@
+#$(module_prefix)guis/$(gui_name)/enter
+
+function $(module_prefix)guis/$(gui_name)/items

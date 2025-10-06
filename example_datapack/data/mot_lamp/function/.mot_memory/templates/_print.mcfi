@@ -1,0 +1,4 @@
+#$(module_prefix)_print
+# 打印临时对象数据
+
+$print $(_this)

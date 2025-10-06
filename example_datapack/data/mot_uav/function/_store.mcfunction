@@ -2,6 +2,15 @@
 # 临时对象赋值到实体对象
 # 输入执行实体
 
+scoreboard players operation @s left_slot_id = left_slot_id int
+scoreboard players operation @s down_slot_id = down_slot_id int
+scoreboard players operation @s right_slot_id = right_slot_id int
+data modify entity @s item.components."minecraft:custom_data".program set from storage mot_uav:io program
+scoreboard players operation @s fans_power = fans_power int
+scoreboard players operation @s fans_theta = fans_theta int
+scoreboard players operation @s fans_timer = fans_timer int
+scoreboard players operation @s motion_static = motion_static int
+data modify entity @s item.components."minecraft:custom_data".list_impulse set from storage mot_uav:io list_impulse
 scoreboard players operation @s vx = vx int
 scoreboard players operation @s vy = vy int
 scoreboard players operation @s vz = vz int

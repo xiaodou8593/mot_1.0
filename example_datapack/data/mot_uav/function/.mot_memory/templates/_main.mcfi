@@ -1,0 +1,7 @@
+#$(module_prefix)_main
+# 执行实体对象
+# 以实体对象为执行者
+
+function $(module_prefix)_get
+function $(module_prefix)_run
+function $(module_prefix)_store

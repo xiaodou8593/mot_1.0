@@ -1,0 +1,8 @@
+{
+	"entity":"this",
+	"function":"set_lore",
+	"mode":"replace_all",
+	"lore":[
+		{"nbt":"input","storage":"mot_uav:io","interpret":true}
+	]
+}

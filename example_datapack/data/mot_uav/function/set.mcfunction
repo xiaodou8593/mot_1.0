@@ -1,6 +1,15 @@
 #mot_uav:set
 # mot_uav:_new调用
 
+execute store result score @s left_slot_id run data get storage mot_uav:io input.left_slot_id
+execute store result score @s down_slot_id run data get storage mot_uav:io input.down_slot_id
+execute store result score @s right_slot_id run data get storage mot_uav:io input.right_slot_id
+data modify entity @s item.components."minecraft:custom_data".program set from storage mot_uav:io input.program
+execute store result score @s fans_power run data get storage mot_uav:io input.fans[0] 10000
+execute store result score @s fans_theta run data get storage mot_uav:io input.fans[1] 10000
+execute store result score @s fans_timer run data get storage mot_uav:io input.fans[2] 10000
+execute store result score @s motion_static run data get storage mot_uav:io input.motion_static
+data modify entity @s item.components."minecraft:custom_data".list_impulse set from storage mot_uav:io input.list_impulse
 execute store result score @s vx run data get storage mot_uav:io input.velocity[0] 10000
 execute store result score @s vy run data get storage mot_uav:io input.velocity[1] 10000
 execute store result score @s vz run data get storage mot_uav:io input.velocity[2] 10000

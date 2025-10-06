@@ -1,0 +1,7 @@
+#$(module_prefix)_swap
+# 交换实体对象和临时对象
+# 输入执行者实体
+
+scoreboard players operation $(score _entity) >< $(score _this)
+
+$swap $(nbt _entity) $(nbt _this) $(project_name)

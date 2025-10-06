@@ -1,0 +1,7 @@
+#mot_uav:program/landing/doc.mcfo
+
+# 高度控制程序的临时对象
+_this: {
+	pointer: [storage mot_uav:io ptr,String],
+	state: <state,int,1>
+}

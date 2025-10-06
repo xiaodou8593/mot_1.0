@@ -2,6 +2,17 @@
 
 # 临时对象
 _this:{
+	left_slot_id:<left_slot_id,int>,
+	down_slot_id:<down_slot_id,int>,
+	right_slot_id:<right_slot_id,int>,
+	program:[storage mot_uav:io program,Compound],
+	fans:{
+		<fans_power,int,1w>,
+		<fans_theta,int,1w>,
+		<fans_timer,int,1w>
+	},
+	static:<motion_static,int>,
+	list_impulse:[storage mot_uav:io list_impulse,ListCompound],
 	velocity:{<vx,int,1w>, <vy,int,1w>, <vz,int,1w>},
 	angular_vec:{
 		<angular_x,int,1w>,

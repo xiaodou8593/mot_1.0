@@ -1,0 +1,16 @@
+#mot_scatter:bullet/doc.mcfo
+
+# 临时对象
+_this:{
+	position:{
+		<x,int,1w>,
+		<y,int,1w>,
+		<z,int,1w>
+	},
+	kvec:{
+		<kvec_x,int,1w>,
+		<kvec_y,int,1w>,
+		<kvec_z,int,1w>
+	},
+	killtime:<killtime,int>
+}

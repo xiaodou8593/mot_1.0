@@ -2,7 +2,7 @@
 
 ## 第一节：运动学对象设计
 
-### 设计无人机的临时对象
+### 1.1.1 设计无人机的临时对象
 
 打开.doc.mcfo，定义一个对象命名为_this
 ```
@@ -121,7 +121,7 @@ _this:{
 
 没有语法错误提示即成功
 
-### 特性测试
+### 1.1.2 特性测试
 
 为了实现无人机的移动，我们需要测试mc中的几种不同的移动实现方案，并找出最佳方案
 
@@ -233,7 +233,7 @@ Ps: upd_aec是指Age标签每刻刷新的药水云，它在早期数据包中被
 
 3. 骑乘实体的坐标不会被抬高，省去偏移的工作
 
-### 初始化mot_uav数据包
+### 1.1.3 初始化mot_uav数据包
 
 打开mot终端，输入命令
 ```
@@ -264,7 +264,7 @@ function mot_uav:_init
 
 ![alt text](images/image-3.png)
 
-### 构建mot_uav的坐标系统
+### 1.1.4 构建mot_uav的坐标系统
 
 打开mot终端创建一个在白名单中的_anchor_to接口
 
@@ -848,7 +848,7 @@ function mot_uav:test/velocity/start
 
 观察到移动的坐标系即成功
 
-### 构建mot_uav展示实体
+### 1.1.5 构建mot_uav展示实体
 
 打开mot终端，创建一个异步测试项目名为display
 
@@ -1286,7 +1286,7 @@ function mot_uav:test/angular/start
 
 ## 第二节：物理模拟计算
 
-### 构建冲量的临时对象
+### 1.2.1 构建冲量的临时对象
 
 打开mot终端，新建冲量的目录和接口
 
@@ -1541,7 +1541,7 @@ function mot_uav:_init
 function mot_uav:test/impulse/start
 ```
 
-### 阻尼，重力，碰撞
+### 1.2.2 阻尼，重力，碰撞
 
 编写_consts，设置阻尼和重力的常量
 
@@ -2384,7 +2384,7 @@ function mot_uav:test/impulse/start
 
 观察到无人机在地面上滑动一段距离后静止
 
-### 静体优化
+### 1.2.3 静体优化
 
 无人机着陆并停止运动后，我们不希望游戏继续运行无人机的运动计算
 
@@ -2517,7 +2517,7 @@ function mot_uav:test/fall/start
 
 ## 第三节：无人机动力
 
-### 机翼电机
+### 1.3.1 机翼电机
 
 打开.doc.mcfo，添加机翼转动参数的字段
 
@@ -3254,7 +3254,7 @@ scoreboard objectives setdisplay sidebar motion_static
 scoreboard players set test int 1
 ```
 
-### 角速度阻尼
+### 1.3.2 角速度阻尼
 
 修改test/fans/main，生成测试实例0.5秒后为其施加冲量
 

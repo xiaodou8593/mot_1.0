@@ -1,0 +1,20 @@
+#mot_uav:program/doc.mcfo
+
+# 控制程序协议
+_this: {
+	pointer: [storage mot_uav:io ptr,String],
+	state: <state,int,1>
+}
+
+_interface: {
+	_run: {
+		input: mot_uav,
+		result: mot_uav
+	},
+	_proj: {
+		input: [storage mot_uav:io input]
+	},
+	_model: {
+		result: [storage mot_uav:io result]
+	}
+}

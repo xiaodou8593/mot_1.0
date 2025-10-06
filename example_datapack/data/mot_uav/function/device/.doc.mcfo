@@ -1,0 +1,29 @@
+#mot_uav:device/doc.mcfo
+
+# 外接设备协议
+_this: {
+	<mot_uav_root,int>
+}
+
+_interface: {
+	_sync_request: {
+		input: {
+			<inp,int>,
+			[storage mot_uav:io slot_type,String]
+		},
+		result: <res,int>
+	},
+	_sync_coord: {
+		input: {
+			mot_uav,
+			vec: {
+				<vec_x,int,1w>,
+				<vec_y,int,1w>,
+				<vec_z,int,1w>
+			}
+		},
+	},
+	_use_signal: {
+		result: <res,int>
+	}
+}

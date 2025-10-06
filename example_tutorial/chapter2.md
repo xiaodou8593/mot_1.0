@@ -2,7 +2,7 @@
 
 ## 第一节：程序与GUI系统
 
-### 构建程序系统
+### 2.1.1 构建程序系统
 
 创建子模块program
 
@@ -304,7 +304,7 @@ execute as @e[tag=test,limit=1] run function mot_uav:fans/_on
 scoreboard players set test int 1
 ```
 
-### 构建GUI系统
+### 2.1.2 构建GUI系统
 
 编写_class，建立无人机计数器
 
@@ -1179,7 +1179,7 @@ execute if data storage mot_uav:io program.pointer as 0-0-0-0-0 run function mot
 
 ## 第二节：基本控制程序
 
-### 添加旋转程序
+### 2.2.1 添加旋转程序
 
 打开mot终端，创建控制程序rotation
 
@@ -1653,7 +1653,7 @@ execute as @e[tag=test,limit=1] run function mot_uav:_controller
 
 旋转功能正常
 
-### 添加水平位移程序
+### 2.2.2 添加水平位移程序
 
 打开mot终端，创建水平位移程序
 
@@ -2125,7 +2125,7 @@ scoreboard players operation angular_len int *= inp int
 scoreboard players operation angular_len int /= 10000 int
 ```
 
-### 添加音效
+### 2.2.3 添加音效
 
 打开mot终端，创建一个异步测试项目命名为fans_sound
 
@@ -2308,7 +2308,7 @@ execute as @e[tag=test,limit=1] run function mot_uav:_controller
 
 ## 第三节：后续完善与优化
 
-### 控制程序的运行状态
+### 2.3.1 控制程序的运行状态
 
 为了使得外部开发者能够更好地对无人机进行编程
 
@@ -3236,7 +3236,7 @@ function mot_uav:test/program/start
 
 观察到无人机完成了管线中预定的各个控制程序
 
-### 修复碰撞bug
+### 2.3.2 修复碰撞bug
 
 使用GUI控制无人机撞墙时，发现无人机会穿墙而过
 

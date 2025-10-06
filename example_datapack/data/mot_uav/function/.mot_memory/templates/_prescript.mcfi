@@ -1,0 +1,5 @@
+#$(module_prefix)_prescript
+# 设置实体对象的规定性
+# 输入执行实体
+
+tag @s add $(module_name)

@@ -1,0 +1,14 @@
+#mot_uav:program/rotation/doc.mcfo
+
+# 旋转控制程序的临时对象
+_this: {
+	pointer: [storage mot_uav:io ptr,String],
+	target_y: <target_y,int,1w>,
+	target_theta: <target_theta,int,1w>,
+	damp_params:{
+		<damp_k,int,1w>,
+		<damp_b,int,1w>,
+		<damp_f,int,1w>
+	},
+	state: <state,int,1>
+}

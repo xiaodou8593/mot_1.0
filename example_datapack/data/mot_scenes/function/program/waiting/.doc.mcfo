@@ -1,0 +1,9 @@
+#mot_uav:program/waiting/doc.mcfo
+
+# 高度控制程序的临时对象
+_this: {
+	pointer: [storage mot_uav:io ptr,String],
+	state: <state,int,1>,
+	target_y: <target_y,int,1w>,
+	wait_time: <wait_time,int,1>
+}

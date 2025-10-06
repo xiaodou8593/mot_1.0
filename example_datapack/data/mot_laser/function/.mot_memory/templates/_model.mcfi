@@ -1,0 +1,7 @@
+#$(module_prefix)_model
+# 使用临时对象构建数据模板
+# 输出数据模板storage $(project_name):io result
+
+$init $(_result_plate)
+
+$assign $(_result_plate) $(_this)

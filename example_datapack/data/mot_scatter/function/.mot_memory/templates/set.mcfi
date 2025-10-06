@@ -1,0 +1,4 @@
+#$(module_prefix)set
+# $(module_prefix)_new调用
+
+$assign $(_entity) $(_input_plate)
